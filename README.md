@@ -18,12 +18,13 @@ The back-end uses json files as it's persistance store.
 I won't belabor you with overly detailed instructions, or production deployment level documentation.
 
 
-The React front-end requires > Node 14. 
+The React front-end requires > Node 14. In fact if you want to skip over a bunch of deprecation warnings you might want to nvm use 14 when building the UI.
 
 To start the back-end rest API (runs on port 3000):
 
 ```bash
 cd blog-api
+npm install
 npm start
 ```
 
@@ -31,8 +32,12 @@ To start the front-end React app in development mode (runs on port 5000)
 
 ```bash
 cd blog-ui
+npm install
 npm start
 ```
+
+
+
 
 App should now be available in your browser
 ```
@@ -41,6 +46,6 @@ http://localhost:5000/
 
 
 ## Development
-Since this is an example app, things that would normally be done in production are missing such as real logging, unit tests, careful css design (it is really, really ugly ), monitoring, etc.
+Since this is an example app, things that would normally be done in production are missing such as real logging, unit tests, careful css design (it is really, really ugly ), UX fineries like loading indicators, performance improvements, monitoring, etc.
 
 I did use Typescript for the back-end because, I like it better and can develop in it much faster. The data layer ws abstracted away in a file, like you would in real life so that you could swap it away for a real persistance layer. I did skip cleaning up orphaned comments when parents are deleted chalking that up to an academic exercise.  The naming conventions I used in the React app are off, but I wanted to get this to you sooner rather than later.
