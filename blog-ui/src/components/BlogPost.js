@@ -83,6 +83,7 @@ const BlogPost = ({ postId, isFresh }) => {
       </div>
     );
   } else {
+    //If this gets too large, or it needs to be used by more than one component it should be moved into its own reusable component
     return (
       <div>
         <h2>Edit Blog Post</h2>

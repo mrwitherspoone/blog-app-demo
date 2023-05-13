@@ -36,7 +36,13 @@ npm install
 npm start
 ```
 
-
+To bundle up the front-end for faster non-dev performance
+```bash
+cd blog-ui
+npm install
+npm run build 
+npm run-script start:prod
+```
 
 
 App should now be available in your browser
