@@ -11,47 +11,6 @@ const commentsFile = "./src/data/comments.json";
 // }
 
 
-export async function createCommentOnPost(postId: string, comment: Comment): Promise<Comment> {
-  const post: BlogPost | undefined = await getPost(postId);
-
-  if (!post) {
-    throw new Error("Post not found");
-  }
-
-  const newComment: Comment = {
-    ...comment,
-    id: uuidv4(),
-    postId: postId,
-    timestamp: Date.now(),
-  };
-
-  const comments: Comment[] = await jsonfile.readFile(commentsFile);
-  comments.push(newComment);
-  await jsonfile.writeFile(commentsFile, comments, { spaces: 2 });
-
-  return newComment;
-}
-
-export async function createCommentOnComment(commentId: string, comment: Comment): Promise<Comment> {
-  const parentComment: Comment | undefined = await getComment(commentId);
-
-  if (!parentComment) {
-    throw new Error("Parent comment not found");
-  }
-
-  const newComment: Comment = {
-    ...comment,
-    id: uuidv4(),
-    commentId: commentId,
-    timestamp: Date.now(),
-  };
-
-  const comments: Comment[] = await jsonfile.readFile(commentsFile);
-  comments.push(newComment);
-  await jsonfile.writeFile(commentsFile, comments, { spaces: 2 });
-
-  return newComment;
-}
 export async function getPosts(): Promise<BlogPost[]> {
   const posts: BlogPost[] = await jsonfile.readFile(postsFile);
   return posts;
@@ -112,6 +71,26 @@ export async function getPostComments(id: string): Promise<Comment[]> {
   return comments.filter((comment) => comment.postId === id);
 }
 
+export async function createCommentOnPost(postId: string, comment: Comment): Promise<Comment> {
+  const post: BlogPost | undefined = await getPost(postId);
+
+  if (!post) {
+    throw new Error("Post not found");
+  }
+
+  const newComment: Comment = {
+    ...comment,
+    id: uuidv4(),
+    postId: postId,
+    timestamp: Date.now(),
+  };
+
+  const comments: Comment[] = await jsonfile.readFile(commentsFile);
+  comments.push(newComment);
+  await jsonfile.writeFile(commentsFile, comments, { spaces: 2 });
+
+  return newComment;
+}
 
 export async function getComments(): Promise<Comment[]> {
   const comments: Comment[] = await jsonfile.readFile(commentsFile);
@@ -168,17 +147,38 @@ export async function deleteComment(id: string): Promise<boolean> {
   return true;
 }
 
+export async function getCommentComments(id: string): Promise<Comment[]> {
+  const comments: Comment[] = await jsonfile.readFile(commentsFile);
+  return comments.filter((comment) => comment.commentId === id);
+}
+
+export async function createCommentOnComment(commentId: string, comment: Comment): Promise<Comment> {
+  const parentComment: Comment | undefined = await getComment(commentId);
+
+  if (!parentComment) {
+    throw new Error("Parent comment not found");
+  }
+
+  const newComment: Comment = {
+    ...comment,
+    id: uuidv4(),
+    commentId: commentId,
+    timestamp: Date.now(),
+  };
+
+  const comments: Comment[] = await jsonfile.readFile(commentsFile);
+  comments.push(newComment);
+  await jsonfile.writeFile(commentsFile, comments, { spaces: 2 });
+
+  return newComment;
+}
+
 async function deletePostComments(id: string): Promise<boolean> {
-  //TODO: delete all the comments when you delete a post
+  //TODO: delete all the comments on a post when you delete a post
   return true;
 }
 
 async function deleteCommentComments(id: string): Promise<boolean> {
-  //TODO: delete all the comments when you delete a comment
+  //TODO: delete all the child comments when you delete a parent comment
   return true;
-}
-
-export async function getCommentComments(id: string): Promise<Comment[]> {
-  const comments: Comment[] = await jsonfile.readFile(commentsFile);
-  return comments.filter((comment) => comment.commentId === id);
 }
